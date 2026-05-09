@@ -6,7 +6,6 @@
     <title>Para Ti ❤️</title>
 
     <style>
-        /* Estilos base */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #111;
@@ -19,12 +18,10 @@
             align-items: center;
         }
 
-        /* Ocultamos todo el contenido inicialmente por seguridad */
         #main-content { display: none; }
 
-        /* PARTICULAS */
         .hearts { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
-        .hearts span { position: absolute; bottom: -100px; font-size: 24px; animation: float 10s linear infinite; opacity: 0.7; }
+        .hearts span { position: absolute; bottom: -100px; font-size: 24px; animation: float 4s linear infinite; opacity: 0.7; }
 
         @keyframes float {
             0% { transform: translateY(0) scale(1); opacity: 0; }
@@ -32,7 +29,6 @@
             100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
         }
 
-        /* SOBRE */
         .envelope { position: relative; width: 340px; height: 240px; cursor: pointer; z-index: 5; transition: 1s ease; }
         .base { position: absolute; width: 100%; height: 100%; background: #dccdb7; border-radius: 10px; }
         .front {
@@ -60,7 +56,6 @@
             opacity: 0; transition: 1s ease; pointer-events: none;
         }
 
-        /* CARTA */
         .letter {
             position: fixed; inset: 0; width: 100vw; height: 100vh; background: #fffaf2;
             z-index: 999; opacity: 0; visibility: hidden; transform: scale(0.9);
@@ -74,13 +69,12 @@
         }
 
         .text-side { flex: 1; max-width: 550px; }
-        .text-side h1 { font-size: 60px; color: #b3001b; margin-bottom: 40px; }
-        .text-side p { font-size: 24px; line-height: 1.8; color: #444; margin-bottom: 25px; }
+        .text-side h1 { font-size: 50px; color: #b3001b; margin-bottom: 30px; }
+        .text-side p { font-size: 22px; line-height: 1.6; color: #444; margin-bottom: 20px; }
 
         .image-side { flex: 1; display: flex; justify-content: center; }
         .image-side img { width: 100%; max-width: 380px; border-radius: 24px; box-shadow: 0 0 30px rgba(0,0,0,0.25); object-fit: cover; }
 
-        /* BOTONES */
         .next-heart { position: fixed; font-size: 55px; cursor: pointer; z-index: 3000; animation: pulse 1.5s infinite; user-select: none; display: none; }
         .next-button { bottom: 20px; left: 50%; transform: translateX(-50%); }
         .back-button { top: 20px; left: 20px; transform: rotate(180deg); }
@@ -91,13 +85,12 @@
             100% { transform: translateX(-50%) scale(1); }
         }
 
-        /* RESPONSIVE */
         @media (max-width: 800px) {
             .envelope { transform: scale(0.75); }
             .letter { padding: 40px 20px; }
             .letter-content { flex-direction: column; text-align: center; gap: 30px; justify-content: flex-start; padding-top: 60px; }
-            .text-side h1 { font-size: 35px; }
-            .text-side p { font-size: 18px; }
+            .text-side h1 { font-size: 32px; }
+            .text-side p { font-size: 17px; }
             .image-side img { max-width: 250px; }
             .next-heart { font-size: 45px; }
             .back-button { top: 10px; left: 50%; transform: translateX(-50%) rotate(180deg); }
@@ -106,23 +99,15 @@
 </head>
 <body>
 
-    <!-- SCRIPT DE SEGURIDAD -->
     <script>
         (function() {
-            const CLAVE_SECRETA = "lilith"; // CAMBIA ESTO POR TU FECHA O CLAVE
+            const CLAVE_SECRETA = "lilith"; // Cambia tu clave aquí
             let intento = "";
-            
             while (intento !== CLAVE_SECRETA) {
                 intento = prompt("Introduce la clave secreta para ver tu sorpresa ❤️:");
-                if (intento === null) {
-                    window.location.href = "https://www.google.com";
-                    return;
-                }
-                if (intento !== CLAVE_SECRETA) {
-                    alert("Clave incorrecta. Inténtalo de nuevo.");
-                }
+                if (intento === null) { window.location.href = "https://www.google.com"; return; }
+                if (intento !== CLAVE_SECRETA) alert("Clave incorrecta. Inténtalo de nuevo.");
             }
-            // Si la clave es correcta, mostramos el contenido
             document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("main-content").style.display = "block";
             });
@@ -130,7 +115,6 @@
     </script>
 
     <div id="main-content">
-        <!-- PARTICULAS -->
         <div class="hearts">
             <span style="left:5%; animation-delay:0s;">❤️</span>
             <span style="left:15%; animation-delay:2s;">❤️</span>
@@ -143,7 +127,6 @@
             <span style="left:95%; animation-delay:7s;">❤️</span>
         </div>
 
-        <!-- SOBRE -->
         <div class="envelope" onclick="openLetter()">
             <div class="base"></div>
             <div class="flap"></div>
@@ -151,9 +134,9 @@
             <div class="heart"></div>
         </div>
 
-        <!-- CARTA -->
         <div class="letter">
-            <div class="letter-content first-page">
+            <!-- PÁGINA 1 -->
+            <div class="letter-content page-1">
                 <div class="text-side">
                     <h1>Para Ti ❤️</h1>
                     <p>Hola, quizá esto te resulte extraño, quise hacer algo un poco más en tu lenguaje.</p>
@@ -163,7 +146,8 @@
                 <div class="image-side"><img src="amor1.jpeg" alt="foto"></div>
             </div>
 
-            <div class="letter-content second-page" style="display:none;">
+            <!-- PÁGINA 2 -->
+            <div class="letter-content page-2" style="display:none;">
                 <div class="text-side">
                     <h1>Nuestro Inicio ❤️</h1>
                     <p>Aún recuerdo el primer día que te conocí, me enamoré de ti al instante.</p>
@@ -173,7 +157,8 @@
                 <div class="image-side"><img src="amor2.jpeg" alt="foto"></div>
             </div>
 
-            <div class="letter-content third-page" style="display:none;">
+            <!-- PÁGINA 3 -->
+            <div class="letter-content page-3" style="display:none;">
                 <div class="text-side">
                     <h1>Mi Corazón ❤️</h1>
                     <p>El tiempo que he pasado contigo me ha enseñado mucho.</p>
@@ -183,7 +168,8 @@
                 <div class="image-side"><img src="amor3.jpeg" alt="foto"></div>
             </div>
 
-            <div class="letter-content fourth-page" style="display:none;">
+            <!-- PÁGINA 4 -->
+            <div class="letter-content page-4" style="display:none;">
                 <div class="text-side">
                     <h1>Perdidamente ❤️</h1>
                     <p>Me he enamorado perdidamente de ti. Amo tu mirada, tu risa y la forma en que me abrazas.</p>
@@ -192,7 +178,8 @@
                 <div class="image-side"><img src="amor4.jpeg" alt="foto"></div>
             </div>
 
-            <div class="letter-content fifth-page" style="display:none;">
+            <!-- PÁGINA 5 -->
+            <div class="letter-content page-5" style="display:none;">
                 <div class="text-side">
                     <h1>Quédate ❤️</h1>
                     <p>Eres la mujer con la que quiero formar toda mi vida. Quédate hoy, mañana y siempre.</p>
@@ -201,13 +188,81 @@
                 <div class="image-side"><img src="amor5.jpeg" alt="foto"></div>
             </div>
 
-            <div class="letter-content sixth-page" style="display:none;">
+            <!-- NUEVA PÁGINA 6 -->
+            <div class="letter-content page-6" style="display:none;">
+                <div class="text-side">
+                    <h1>Indispensable ❤️</h1>
+                    <p>Te convertiste para mi en algo esencial, algo indispensable para mi felicidad y tranquilidad.</p>
+                    <p>Gracias a ti he conocido lo que es ser feliz, cada momento compartido contigo me otorga vida.</p>
+                    <p>Tú me complementas, haces que quiera mejorar y ser un mejor hombre para ti ❤️</p>
+                </div>
+                <div class="image-side"><img src="amor6.jpeg" alt="foto"></div>
+            </div>
+
+            <!-- NUEVA PÁGINA 7 -->
+            <div class="letter-content page-7" style="display:none;">
+                <div class="text-side">
+                    <h1>Oportunidad ❤️</h1>
+                    <p>Recuerdo los momentos que he pasado a tu lado y sigo pensando que mi mayor error fue haberte dejado ir.</p>
+                    <p>Pero no quiero pensar más en el pasado ya que me diste la bendición de volvernos a encontrar.</p>
+                    <p>Es una oportunidad que no desperdiciaré y me quedaré a tu lado siempre ❤️</p>
+                </div>
+                <div class="image-side"><img src="amor7.jpeg" alt="foto"></div>
+            </div>
+
+            <!-- NUEVA PÁGINA 8 -->
+            <div class="letter-content page-8" style="display:none;">
+                <div class="text-side">
+                    <h1>Sin Miedo ❤️</h1>
+                    <p>El día que mandé ese mensaje estaba sumamente nervioso, no sabía qué pasaría, y si me rechazabas.</p>
+                    <p>Pero tomé todo el valor y lo hice, porque si el miedo me hubiera ganado me hubiera arrepentido toda mi vida.</p>
+                    <p>Gracias a eso mi vida es mejor a tu lado, me haces tan feliz como no tienes una idea ❤️</p>
+                </div>
+                <div class="image-side"><img src="amor8.jpeg" alt="foto"></div>
+            </div>
+
+            <!-- NUEVA PÁGINA 9 -->
+            <div class="letter-content page-9" style="display:none;">
+                <div class="text-side">
+                    <h1>Mi Razón de Ser ❤️</h1>
+                    <p>Quién pensaría que esa niña enojona, jetona y payasa sería la razón por la que soy tan feliz.</p>
+                    <p>Amo estar a tu lado, las salidas, tus gestos, tus enojos y hasta la forma en la que me regañas.</p>
+                    <p>Eso me da vida y alimenta mi alma de felicidad. Sin duda alguna, te amo ❤️</p>
+                </div>
+                <div class="image-side"><img src="amor9.jpeg" alt="foto"></div>
+            </div>
+
+            <!-- NUEVA PÁGINA 10 -->
+            <div class="letter-content page-10" style="display:none;">
+                <div class="text-side">
+                    <h1>Tu Sonrisa ❤️</h1>
+                    <p>Ante mis ojos siempre eres hermosa, me encanta todo de ti y quiero hacerte feliz toda mi vida.</p>
+                    <p>No sé qué haría si algún día me hace falta esa preciosa sonrisa tuya o esa carita enojada.</p>
+                    <p>No estar a tu lado me destrozaría por completo ❤️</p>
+                </div>
+                <div class="image-side"><img src="amor10.jpeg" alt="foto"></div>
+            </div>
+
+            <!-- NUEVA PÁGINA 11 -->
+            <div class="letter-content page-11" style="display:none;">
+                <div class="text-side">
+                    <h1>Primer Amor ❤️</h1>
+                    <p>Esa mujer tan pequeña como una flor me atrae hacia ella como la fuerza de la tierra.</p>
+                    <p>De pronto, caí hacia ella sin razón, como la manzana de Newton, como un fuerte latido.</p>
+                    <p>Mi corazón llegó del cielo a la tierra en un vertiginoso movimiento... me di cuenta que te amo ❤️</p>
+                </div>
+                <div class="image-side"><img src="amor11.jpeg" alt="foto"></div>
+            </div>
+
+            <!-- PÁGINA FINAL 1 (Pregunta) -->
+            <div class="letter-content page-12" style="display:none;">
                 <div class="text-side" style="max-width:100%; text-align:center;">
                     <h1 style="font-size:clamp(40px, 8vw, 80px);">Así que ahora te pido ❤️</h1>
                 </div>
             </div>
 
-            <div class="letter-content seventh-page" style="display:none;">
+            <!-- PÁGINA FINAL 2 (Cierre) -->
+            <div class="letter-content page-13" style="display:none;">
                 <div class="text-side">
                     <h1>❤️</h1>
                     <p style="font-size:30px;">¿Me concederías el honor de ser tu novio?</p>
@@ -216,7 +271,6 @@
             </div>
         </div>
 
-        <!-- BOTONES -->
         <div class="next-heart back-button" onclick="previousPage()">❤️</div>
         <div class="next-heart next-button" onclick="nextPage()">❤️</div>
 
@@ -229,12 +283,15 @@
         const songs = ["middle.mp3", "ama.mp3", "perro.mp3", "soñe.mp3"];
         let currentSong = 0;
         const music = document.getElementById("music");
-        const pages = [".first-page", ".second-page", ".third-page", ".fourth-page", ".fifth-page", ".sixth-page", ".seventh-page"];
+        
+        // Array de páginas actualizado (13 páginas en total)
+        const pages = [];
+        for(let i=1; i<=13; i++) { pages.push(`.page-${i}`); }
 
         function playCurrentSong() {
             music.src = songs[currentSong];
             music.volume = 0.15;
-            music.play().catch(e => console.log("Audio esperando interacción"));
+            music.play().catch(e => console.log("Audio esperando"));
         }
 
         music.addEventListener("ended", () => {
