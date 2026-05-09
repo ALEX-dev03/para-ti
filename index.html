@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para Ti ❤️</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #111;
+            overflow-x: hidden;
+            overflow-y: auto;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* =========================
+           PARTICULAS
+        ========================= */
+        .hearts {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .hearts span {
+            position: absolute;
+            bottom: -100px;
+            font-size: 24px;
+            animation: float 10s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
+        }
+
+        /* =========================
+           SOBRE (RESPONSIVE)
+        ========================= */
+        .envelope {
+            position: relative;
+            width: 340px;
+            height: 240px;
+            cursor: pointer;
+            z-index: 5;
+            transition: 1s ease;
+        }
+
+        .base {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #dccdb7;
+            border-radius: 10px;
+        }
+
+        .front {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 170px solid #d6c6ae;
+            border-right: 170px solid #d6c6ae;
+            border-top: 120px solid transparent;
+            border-bottom: 120px solid #cdbb9f;
+            bottom: 0;
+        }
+
+        .flap {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 170px solid transparent;
+            border-right: 170px solid transparent;
+            border-top: 120px solid #ece1d0;
+            transform-origin: top;
+            transition: 1s ease;
+            z-index: 6;
+        }
+
+        .heart {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #c40021;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            z-index: 10;
+            box-shadow: 0 0 25px rgba(196,0,33,0.6);
+        }
+
+        .heart::before, .heart::after {
+            content: "";
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #c40021;
+            border-radius: 50%;
+        }
+        .heart::before { top: -30px; left: 0; }
+        .heart::after { left: -30px; top: 0; }
+
+        .envelope.open .flap,
+        .envelope.open .front,
+        .envelope.open .base,
+        .envelope.open .heart {
+            opacity: 0;
+            transition: 1s ease;
+            pointer-events: none;
+        }
+
+        /* =========================
+           CARTA Y CONTENIDO
+        ========================= */
+        .letter {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #fffaf2;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.9);
+            transition: 1s ease;
+            overflow-y: auto;
+            padding: 60px;
+        }
+
+        .letter.open {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .letter-content {
+            width: 100%;
+            min-height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 70px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .text-side {
+            flex: 1;
+            max-width: 550px;
+        }
+
+        .text-side h1 {
+            font-size: 60px;
+            color: #b3001b;
+            margin-bottom: 40px;
+        }
+
+        .text-side p {
+            font-size: 24px;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 25px;
+        }
+
+        .image-side {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .image-side img {
+            width: 100%;
+            max-width: 380px;
+            border-radius: 24px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.25);
+            object-fit: cover;
+        }
+
+        /* =========================
+           BOTONES
+        ========================= */
+        .next-heart {
+            position: fixed;
+            font-size: 55px;
+            cursor: pointer;
+            z-index: 3000;
+            animation: pulse 1.5s infinite;
+            user-select: none;
+            display: none;
+        }
+
+        .next-button { bottom: 20px; left: 50%; transform: translateX(-50%); }
+        .back-button { top: 20px; left: 20px; transform: rotate(180deg); }
+
+        @keyframes pulse {
+            0% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.12); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+
+        /* =========================
+           MEDIA QUERIES (MÓVIL)
+        ========================= */
+        @media (max-width: 800px) {
+            .envelope {
+                transform: scale(0.75); /* Sobre más pequeño en móvil */
+            }
+
+            .letter {
+                padding: 40px 20px;
+            }
+
+            .letter-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+                justify-content: flex-start;
+                padding-top: 60px; /* Espacio para el botón de volver */
+            }
+
+            .text-side h1 {
+                font-size: 35px;
+                margin-bottom: 20px;
+            }
+
+            .text-side p {
+                font-size: 18px;
+                line-height: 1.5;
+                margin-bottom: 15px;
+            }
+
+            .image-side img {
+                max-width: 250px;
+            }
+
+            .next-heart {
+                font-size: 45px;
+            }
+
+            .back-button {
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%) rotate(180deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PARTICULAS -->
+    <div class="hearts">
+        <span style="left:5%; animation-delay:0s;">❤️</span>
+        <span style="left:15%; animation-delay:2s;">❤️</span>
+        <span style="left:25%; animation-delay:4s;">❤️</span>
+        <span style="left:35%; animation-delay:1s;">❤️</span>
+        <span style="left:50%; animation-delay:5s;">❤️</span>
+        <span style="left:65%; animation-delay:3s;">❤️</span>
+        <span style="left:75%; animation-delay:6s;">❤️</span>
+        <span style="left:85%; animation-delay:2s;">❤️</span>
+        <span style="left:95%; animation-delay:7s;">❤️</span>
+    </div>
+
+    <!-- SOBRE -->
+    <div class="envelope" onclick="openLetter()">
+        <div class="base"></div>
+        <div class="flap"></div>
+        <div class="front"></div>
+        <div class="heart"></div>
+    </div>
+
+    <!-- CARTA -->
+    <div class="letter">
+        <!-- PÁGINAS -->
+        <div class="letter-content first-page">
+            <div class="text-side">
+                <h1>Para Ti ❤️</h1>
+                <p>Hola, quizá esto te resulte extraño, quise hacer algo un poco más en tu lenguaje.</p>
+                <p>Quise mostrarte un poco más de cuánto te amo, y hoy vengo a recordarte muchas cosas.</p>
+                <p>Y tratar de descongelar ese frío corazón tuyo jaja ❤️</p>
+            </div>
+            <div class="image-side"><img src="amor1.jpeg" alt="foto"></div>
+        </div>
+
+        <div class="letter-content second-page" style="display:none;">
+            <div class="text-side">
+                <h1>Nuestro Inicio ❤️</h1>
+                <p>Aún recuerdo el primer día que te conocí, me enamoré de ti al instante.</p>
+                <p>Había tanto en común que parecía extraño conectar tan fácil con alguien.</p>
+                <p>Como si el destino nos hubiese juntado ❤️</p>
+            </div>
+            <div class="image-side"><img src="amor2.jpeg" alt="foto"></div>
+        </div>
+
+        <div class="letter-content third-page" style="display:none;">
+            <div class="text-side">
+                <h1>Mi Corazón ❤️</h1>
+                <p>El tiempo que he pasado contigo me ha enseñado mucho.</p>
+                <p>He comprendido que mi corazón late con intensidad y vive por ti.</p>
+                <p>Que Dios me arrebate la vida si algún día dejo de hacerte feliz ❤️</p>
+            </div>
+            <div class="image-side"><img src="amor3.jpeg" alt="foto"></div>
+        </div>
+
+        <div class="letter-content fourth-page" style="display:none;">
+            <div class="text-side">
+                <h1>Perdidamente ❤️</h1>
+                <p>Me he enamorado perdidamente de ti. Amo tu mirada, tu risa y la forma en que me abrazas.</p>
+                <p>Amo cada rincón de ti y quiero amarte toda la vida ❤️</p>
+            </div>
+            <div class="image-side"><img src="amor4.jpeg" alt="foto"></div>
+        </div>
+
+        <div class="letter-content fifth-page" style="display:none;">
+            <div class="text-side">
+                <h1>Quédate ❤️</h1>
+                <p>Eres la mujer con la que quiero formar toda mi vida. Quédate hoy, mañana y siempre.</p>
+                <p>No veo mi vida si no es a tu lado ❤️</p>
+            </div>
+            <div class="image-side"><img src="amor5.jpeg" alt="foto"></div>
+        </div>
+
+        <div class="letter-content sixth-page" style="display:none;">
+            <div class="text-side" style="max-width:100%; text-align:center;">
+                <h1 style="font-size:clamp(40px, 8vw, 80px);">Así que ahora te pido ❤️</h1>
+            </div>
+        </div>
+
+        <div class="letter-content seventh-page" style="display:none;">
+            <div class="text-side">
+                <h1>❤️</h1>
+                <p style="font-size:30px;">¿Me concederías el honor de ser tu novio?</p>
+            </div>
+            <div class="image-side"><img src="final.jpeg" alt="foto"></div>
+        </div>
+    </div>
+
+    <!-- BOTONES -->
+    <div class="next-heart back-button" onclick="previousPage()">❤️</div>
+    <div class="next-heart next-button" onclick="nextPage()">❤️</div>
+
+    <audio id="music"></audio>
+
+    <script>
+        let opened = false;
+        let currentPage = 1;
+        const songs = ["middle.mp3", "ama.mp3", "perro.mp3", "soñe.mp3"];
+        let currentSong = 0;
+        const music = document.getElementById("music");
+        const pages = [".first-page", ".second-page", ".third-page", ".fourth-page", ".fifth-page", ".sixth-page", ".seventh-page"];
+
+        function playCurrentSong() {
+            music.src = songs[currentSong];
+            music.volume = 0.15;
+            music.play().catch(e => console.log("Esperando interacción para audio"));
+        }
+
+        music.addEventListener("ended", () => {
+            currentSong = (currentSong + 1) % songs.length;
+            playCurrentSong();
+        });
+
+        function openLetter() {
+            if (opened) return;
+            opened = true;
+            document.querySelector(".envelope").classList.add("open");
+            document.querySelector(".letter").classList.add("open");
+            document.querySelector(".next-button").style.display = "block";
+            document.querySelector(".back-button").style.display = "block";
+            if (music.paused) playCurrentSong();
+        }
+
+        function changePage(current, next) {
+            current.style.opacity = "0";
+            setTimeout(() => {
+                current.style.display = "none";
+                next.style.display = "flex";
+                next.style.opacity = "0";
+                setTimeout(() => { next.style.opacity = "1"; }, 100);
+            }, 500);
+        }
+
+        function nextPage() {
+            if (currentPage >= pages.length) return;
+            const current = document.querySelector(pages[currentPage - 1]);
+            const next = document.querySelector(pages[currentPage]);
+            changePage(current, next);
+            currentPage++;
+        }
+
+        function previousPage() {
+            if (currentPage === 1) {
+                closeLetter();
+                return;
+            }
+            const current = document.querySelector(pages[currentPage - 1]);
+            const previous = document.querySelector(pages[currentPage - 2]);
+            changePage(current, previous);
+            currentPage--;
+        }
+
+        function closeLetter() {
+            document.querySelector(".letter").classList.remove("open");
+            document.querySelector(".envelope").classList.remove("open");
+            document.querySelector(".next-button").style.display = "none";
+            document.querySelector(".back-button").style.display = "none";
+            opened = false;
+        }
+    </script>
+</body>
+</html>
